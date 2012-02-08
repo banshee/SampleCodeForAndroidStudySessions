@@ -1,17 +1,22 @@
 package com.restphone.audioworkshop;
 
-import android.app.Activity;
-import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
-public class AudioWorkshopActivity extends Activity {
+public class AudioWorkshopActivity extends FragmentActivity {
   /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.main);
+    setContentView(R.layout.audio_workshop);
 
-     MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.testmp3);
-     mediaPlayer.start(); // no need to call prepare(); create() does that for
-  }
+    BasicAudioFragment basicAudioFragment = new BasicAudioFragment();
+
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    fragmentTransaction.add(R.id.base_layout, basicAudioFragment);
+    fragmentTransaction.commit();  
+    }
 }
