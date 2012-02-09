@@ -13,6 +13,12 @@ import android.widget.MediaController.MediaPlayerControl;
 
 public class BasicAudioFragment extends Fragment {
   @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    createPlayer();
+  }
+
+  @Override
   public View onCreateView(
       LayoutInflater inflater,
       ViewGroup container,
@@ -22,57 +28,24 @@ public class BasicAudioFragment extends Fragment {
   }
 
   @Override
-  public void onResume() {
-    super.onResume();
+  public void onDetach() {
+    super.onDetach();
+    mediaPlayer.stop();
+    mediaPlayer.release();
+    mediaPlayer = null;
+  }
 
-    final MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(),
-        R.raw.testmp3);
-    mediaPlayer.start(); // no need to call prepare(); create() does that for
+  private void createPlayer() {
+    mediaPlayer = MediaPlayer.create(getActivity(), R.raw.test_cbr);
+    mediaPlayer.setLooping(true);
 
-    final MediaController mediaController = new MediaController(getActivity());
+    mediaController = new MediaController(getActivity());
     View audioView = getActivity().findViewById(R.id.imageView1);
     mediaController.setAnchorView(audioView);
-
+    
     // Notice that we are still not hooked up yet
 
     MediaPlayerControl x = new MediaController.MediaPlayerControl() {
-      @Override
-      public void start() {
-        mediaPlayer.start();
-      }
-
-      @Override
-      public void pause() {
-        mediaPlayer.pause();
-      }
-
-      @Override
-      public int getDuration() {
-        return mediaPlayer.getDuration();
-      }
-
-      @Override
-      public int getCurrentPosition() {
-        return mediaPlayer.getCurrentPosition();
-      }
-
-      @Override
-      public void seekTo(int pos) {
-        mediaPlayer.seekTo(pos);
-      }
-
-      @Override
-      public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
-      }
-
-      @Override
-      public int getBufferPercentage() {
-        float currentPosition = mediaPlayer.getCurrentPosition();
-        float bufferLength = mediaPlayer.getDuration();
-        return (int) ((currentPosition / bufferLength) * 1000);
-      }
-
       @Override
       public boolean canPause() {
         return true;
@@ -87,6 +60,41 @@ public class BasicAudioFragment extends Fragment {
       public boolean canSeekForward() {
         return true;
       }
+
+      @Override
+      public int getBufferPercentage() {
+        return mediaPlayer != null ? (mediaPlayer.getCurrentPosition() * 100 / mediaPlayer.getDuration()) : 0;
+      }
+
+      @Override
+      public int getCurrentPosition() {
+        return mediaPlayer != null ? mediaPlayer.getCurrentPosition() : 0;
+      }
+
+      @Override
+      public int getDuration() {
+        return mediaPlayer != null ? mediaPlayer.getDuration() : 0;
+      }
+
+      @Override
+      public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
+      }
+
+      @Override
+      public void pause() {
+        mediaPlayer.pause();
+      }
+
+      @Override
+      public void seekTo(int pos) {
+        mediaPlayer.seekTo(pos);
+      }
+
+      @Override
+      public void start() {
+        mediaPlayer.start();
+      }
     };
 
     mediaController.setMediaPlayer(x);
@@ -99,4 +107,7 @@ public class BasicAudioFragment extends Fragment {
       }
     });
   }
+
+  private MediaController mediaController;
+  private MediaPlayer mediaPlayer;
 }
