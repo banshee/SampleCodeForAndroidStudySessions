@@ -1,5 +1,6 @@
 package com.restphone.audioworkshop;
 
+import static com.google.common.base.Preconditions.checkState;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,11 +12,42 @@ import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.MediaController.MediaPlayerControl;
 
+/**
+ * This is a a demonstration fragment with a media player, media controller, and
+ * an image view. Touching the image view brings up the media controller.
+ * 
+ * <p>
+ * 
+ * Please note that this is an unusual way to play audio. You do this if your
+ * audio is attached to a particular activity. The soundtrack for something
+ * that's particular to what's in the current displayed view, for example.
+ * 
+ * <p>
+ * 
+ * Think about what the expected behavior is when your users do things liker
+ * rotate the phone. You're going to run through the activity and fragment
+ * lifecycle, so you'll need to do something sensible with the audio playback.
+ * Interrupting it and restarting at the beginning of the track is rarely the
+ * right choice.
+ * 
+ * @see <a
+ *      href="http://developer.android.com/reference/android/media/MediaPlayer.html">MediaPlayer</a>
+ *      in the Android developers guide. There's a very useful diagram of the
+ *      MediaPlayer state machine there.
+ * @see <a
+ *      href="http://developer.android.com/guide/topics/media/mediaplayer.html">Media&nbspPlayback</a>
+ *      developer's guide section.
+ * @see <a
+ *      href="http://developer.android.com/guide/topics/fundamentals/fragments.html">Fragments</a>
+ *      in the Android developers guide
+ */
+
 public class BasicAudioFragment extends Fragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     createPlayer();
+    createMediaController();
   }
 
   @Override
@@ -23,29 +55,53 @@ public class BasicAudioFragment extends Fragment {
       LayoutInflater inflater,
       ViewGroup container,
       Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
     return inflater.inflate(R.layout.basic_audio_player, container, false);
   }
 
   @Override
   public void onDetach() {
     super.onDetach();
+
     mediaPlayer.stop();
+
+    // MediaPlayer consumes system resources that need to be freed when you're
+    // not
+    // actually using the media. Don't just leave this up to garbage collection.
     mediaPlayer.release();
+
+    // Setting mediaPlayer to null to tell mediaController that this mediaPlayer
+    // isn't available any more. MediaController will make native calls to
+    // mediaPlayer that
+    // throw exceptions after release() is called.
     mediaPlayer = null;
   }
 
+  /**
+   * Creates a player using one of the mp3 files stored as raw resources in the
+   * application.
+   * 
+   * In a real application, you'd probably want more sophisticated code to
+   * choose where to get audio data.
+   */
   private void createPlayer() {
     mediaPlayer = MediaPlayer.create(getActivity(), R.raw.test_cbr);
+
+    // Loop just to make the live demonstration easier.
     mediaPlayer.setLooping(true);
+  }
+
+  /**
+   * Creates the controller (play, pause, rewind etc controls) for the player.
+   */
+  private void createMediaController() {
+    checkState(mediaPlayer != null,
+        "media player must be initialized before the media controller");
 
     mediaController = new MediaController(getActivity());
-    View audioView = getActivity().findViewById(R.id.imageView1);
-    mediaController.setAnchorView(audioView);
-    
-    // Notice that we are still not hooked up yet
 
-    MediaPlayerControl x = new MediaController.MediaPlayerControl() {
+    mediaController.setAnchorView(getAudioView());
+
+    MediaPlayerControl mediaPlayerControl = new MediaController.MediaPlayerControl() {
       @Override
       public boolean canPause() {
         return true;
@@ -63,7 +119,8 @@ public class BasicAudioFragment extends Fragment {
 
       @Override
       public int getBufferPercentage() {
-        return mediaPlayer != null ? (mediaPlayer.getCurrentPosition() * 100 / mediaPlayer.getDuration()) : 0;
+        return mediaPlayer != null ? (mediaPlayer.getCurrentPosition() * 100 / mediaPlayer.getDuration())
+            : 0;
       }
 
       @Override
@@ -97,15 +154,23 @@ public class BasicAudioFragment extends Fragment {
       }
     };
 
-    mediaController.setMediaPlayer(x);
-
-    audioView.setOnTouchListener(new OnTouchListener() {
+    getAudioView().setOnTouchListener(new OnTouchListener() {
       @Override
       public boolean onTouch(View v, MotionEvent event) {
         mediaController.show();
         return true;
       }
     });
+
+    mediaController.setMediaPlayer(mediaPlayerControl);
+  }
+
+  /**
+   * @return The view chosen as the placeholder for audio in this fragment.
+   */
+  private View getAudioView() {
+    View audioView = getActivity().findViewById(R.id.imageView1);
+    return audioView;
   }
 
   private MediaController mediaController;
