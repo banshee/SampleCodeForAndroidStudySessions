@@ -14,11 +14,12 @@ public class AudioWorkshopActivity extends FragmentActivity {
 
     BasicAudioFragment basicAudioFragment = new BasicAudioFragment();
     BasicVideoFragment bv = new BasicVideoFragment();
+    BasicCameraDisplay bc = new BasicCameraDisplay();
 
     FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //    fragmentTransaction.add(R.id.base_layout, basicAudioFragment);
-    fragmentTransaction.add(R.id.base_layout, bv);
+    fragmentTransaction.add(R.id.base_layout, bc);
     fragmentTransaction.commit();  
     }
 }

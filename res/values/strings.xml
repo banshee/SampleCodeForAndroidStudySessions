@@ -4,5 +4,6 @@
     <string name="hello">Hello World, AudioWorkshopActivity!</string>
     <string name="app_name">AudioWorkshop</string>
     <string name="a_nice_background_for_the_audio_player">A nice background for the audio player</string>
+    <string name="photo">Photo</string>
 
 </resources>
