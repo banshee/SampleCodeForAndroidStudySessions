@@ -18,17 +18,18 @@ import android.widget.MediaController.MediaPlayerControl;
  * 
  * <p>
  * 
- * Please note that this is an unusual way to play audio. You do this if your
- * audio is attached to a particular activity. The soundtrack for something
- * that's particular to what's in the current displayed view, for example.
+ * This code demonstrates a fairly stripped-down audio experience. It plays
+ * audio in the visible activity. That has some implications that may not be
+ * obvious. For example, rotating the phone destroys the activity playing audio.
  * 
  * <p>
  * 
- * Think about what the expected behavior is when your users do things liker
- * rotate the phone. You're going to run through the activity and fragment
- * lifecycle, so you'll need to do something sensible with the audio playback.
- * Interrupting it and restarting at the beginning of the track is rarely the
- * right choice.
+ * The challenge to audio isn't in figuring out how to play audio in a visible
+ * activity. It's in how you interact with the rest of the Android system. Think
+ * about what the expected behavior is when your users do things liker rotate
+ * the phone. You're going to run through the activity and fragment lifecycle,
+ * so you'll need to do something sensible with the audio playback. Interrupting
+ * it and restarting at the beginning of the track is rarely the right choice.
  * 
  * @see <a
  *      href="http://developer.android.com/reference/android/media/MediaPlayer.html">MediaPlayer</a>
@@ -135,7 +136,7 @@ public class BasicAudioFragment extends Fragment {
 
       @Override
       public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
+        return mediaPlayer != null && mediaPlayer.isPlaying();
       }
 
       @Override
