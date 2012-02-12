@@ -34,6 +34,7 @@ public class BasicVideoFragment extends Fragment {
   public void onResume() {
     super.onResume();
     loadAndPlayVideo();
+    getActivity().setTitle(toString());
   }
 
   /**
@@ -42,7 +43,8 @@ public class BasicVideoFragment extends Fragment {
    *         isn't useful outside of a demo.)
    */
   private Uri getMostRecentVideo() {
-    final String absolutePathToCameraDirectory = new File(Environment.DIRECTORY_DCIM, "Camera").getAbsolutePath();
+    final String absolutePathToCameraDirectory = new File(Environment.DIRECTORY_DCIM,
+        "Camera").getAbsolutePath();
     File externalStoragePublicDirectory = Environment.getExternalStoragePublicDirectory(absolutePathToCameraDirectory);
     if (externalStoragePublicDirectory.isDirectory()) {
       for (String f : externalStoragePublicDirectory.list()) {

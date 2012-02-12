@@ -174,6 +174,12 @@ public class BasicAudioFragment extends Fragment {
     return audioView;
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    getActivity().setTitle(toString());
+}
+  
   private MediaController mediaController;
   private MediaPlayer mediaPlayer;
 }

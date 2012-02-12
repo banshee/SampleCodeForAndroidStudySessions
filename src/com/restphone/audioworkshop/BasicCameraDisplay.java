@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageView;
 
 /**
@@ -63,6 +62,7 @@ public class BasicCameraDisplay extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
+    getActivity().setTitle(toString());
     getView().setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {

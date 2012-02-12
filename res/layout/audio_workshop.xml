@@ -5,10 +5,36 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/basic_audio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Audio" />
+
+        <Button
+            android:id="@+id/basic_video_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Video" />
+
+        <Button
+            android:id="@+id/basic_camera_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Camera" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/base_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
+
     </LinearLayout>
 
 </LinearLayout>
