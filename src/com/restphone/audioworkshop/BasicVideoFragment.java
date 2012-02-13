@@ -15,10 +15,11 @@ import android.widget.VideoView;
 /**
  * This is a a demonstration fragment with a VideoView. It finds a video in the
  * Environment.DIRECTORY_DCIM + "/Camera" directory and plays it.
- * 
  * <p>
- * 
- * Playing a video like this is extremely simple.
+ * Playing video is usually simpler than playing audio. Audio has a background
+ * mode; there are lots of reasons why you'd want sound to continue even when
+ * you're doing something else. Normally video is only interesting when you're
+ * the thing the user is actually looking at.
  */
 
 public class BasicVideoFragment extends Fragment {
@@ -40,14 +41,23 @@ public class BasicVideoFragment extends Fragment {
   /**
    * @return The first video returned by File#list matching .*3gp in
    *         Environment.DIRECTORY_DCIM/Camera. (Note that this almost certainly
-   *         isn't useful outside of a demo.)
+   *         isn't useful outside of a demo, and doesn't match most people's
+   *         idea of "most recent".)
    */
   private Uri getMostRecentVideo() {
+    // Note that this is a hack. I don't think there's a way to ask the camera
+    // where it stores video.
     final String absolutePathToCameraDirectory = new File(Environment.DIRECTORY_DCIM,
         "Camera").getAbsolutePath();
+
     File externalStoragePublicDirectory = Environment.getExternalStoragePublicDirectory(absolutePathToCameraDirectory);
+
+    // It's possible the camera hasn't created the directory we're looking for.
+    // In a real application, you'd want to tell the user
+    // that our state is unexpected.
     if (externalStoragePublicDirectory.isDirectory()) {
       for (String f : externalStoragePublicDirectory.list()) {
+        // Another hack. There are lots of possible video formats.
         if (f.matches(".*3gp$")) {
           File videoFile = new File(externalStoragePublicDirectory, f);
           return Uri.fromFile(videoFile);

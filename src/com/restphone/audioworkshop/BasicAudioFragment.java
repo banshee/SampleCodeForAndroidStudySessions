@@ -41,6 +41,9 @@ import android.widget.MediaController.MediaPlayerControl;
  * @see <a
  *      href="http://developer.android.com/guide/topics/fundamentals/fragments.html">Fragments</a>
  *      in the Android developers guide
+ * @see <a
+ *      href="http://www.google.com/events/io/2010/sessions/android-audio-techniques.html">Google&nbspIO&nbspSession</a>
+ *      for much more detailed information about controlling audio.
  */
 
 public class BasicAudioFragment extends Fragment {
@@ -57,14 +60,6 @@ public class BasicAudioFragment extends Fragment {
       ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.basic_audio_player, container, false);
-  }
-
-  @Override
-  public void onPause() {
-    super.onPause();
-    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-      mediaPlayer.pause();
-    }
   }
 
   @Override
@@ -85,18 +80,19 @@ public class BasicAudioFragment extends Fragment {
     mediaPlayer = null;
   }
 
-  /**
-   * Creates a player using one of the mp3 files stored as raw resources in the
-   * application.
-   * 
-   * In a real application, you'd probably want more sophisticated code to
-   * choose where to get audio data.
-   */
-  private void createPlayer() {
-    mediaPlayer = MediaPlayer.create(getActivity(), R.raw.test_cbr);
+  @Override
+  public void onPause() {
+    super.onPause();
+    // We want to pause audio when we're not visible
+    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+      mediaPlayer.pause();
+    }
+  }
 
-    // Loop just to make the live demonstration easier.
-    mediaPlayer.setLooping(true);
+  @Override
+  public void onResume() {
+    super.onResume();
+    getActivity().setTitle(toString());
   }
 
   /**
@@ -175,17 +171,25 @@ public class BasicAudioFragment extends Fragment {
   }
 
   /**
+   * Creates a player using one of the mp3 files stored as raw resources in the
+   * application.
+   * 
+   * In a real application, you'd probably want more sophisticated code to
+   * choose where to get audio data.
+   */
+  private void createPlayer() {
+    mediaPlayer = MediaPlayer.create(getActivity(), R.raw.test_cbr);
+
+    // Loop just to make the live demonstration easier.
+    mediaPlayer.setLooping(true);
+  }
+
+  /**
    * @return The view chosen as the placeholder for audio in this fragment.
    */
   private View getAudioView() {
     View audioView = getActivity().findViewById(R.id.imageView1);
     return audioView;
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    getActivity().setTitle(toString());
   }
 
   private MediaController mediaController;

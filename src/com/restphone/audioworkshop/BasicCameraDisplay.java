@@ -23,9 +23,12 @@ import android.widget.ImageView;
  * 
  * <p>
  * 
- * Notice the code that replaces the imageview.  If you're not clearing your bitmaps, you'll quickly see:
+ * Notice the code that replaces the imageview. If you're not clearing your
+ * bitmaps, you'll quickly see:
  * 
- * <pre>java.lang.OutOfMemoryError: bitmap size exceeds VM budget</pre>
+ * <pre>
+ * java.lang.OutOfMemoryError: bitmap size exceeds VM budget
+ * </pre>
  */
 
 public class BasicCameraDisplay extends Fragment {
