@@ -60,6 +60,14 @@ public class BasicAudioFragment extends Fragment {
   }
 
   @Override
+  public void onPause() {
+    super.onPause();
+    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+      mediaPlayer.pause();
+    }
+  }
+
+  @Override
   public void onDetach() {
     super.onDetach();
 
@@ -178,8 +186,8 @@ public class BasicAudioFragment extends Fragment {
   public void onResume() {
     super.onResume();
     getActivity().setTitle(toString());
-}
-  
+  }
+
   private MediaController mediaController;
   private MediaPlayer mediaPlayer;
 }
