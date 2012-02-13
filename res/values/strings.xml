@@ -5,5 +5,6 @@
     <string name="app_name">AudioWorkshop</string>
     <string name="a_nice_background_for_the_audio_player">A nice background for the audio player</string>
     <string name="photo">Photo</string>
+    <string name="touch_the_picture">Tap the picture</string>
 
 </resources>
