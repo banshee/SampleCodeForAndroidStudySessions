@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:baselineAligned="false">
 
     <LinearLayout
         android:id="@+id/button_container"
@@ -13,19 +14,19 @@
             android:id="@+id/basic_audio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Audio" />
+            android:text="@string/audio" />
 
         <Button
             android:id="@+id/basic_video_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Video" />
+            android:text="@string/video" />
 
         <Button
             android:id="@+id/basic_camera_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Camera" />
+            android:text="@string/camera" />
 
     </LinearLayout>
 
@@ -42,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Welcome to the Android Study Session"
+            android:text="@string/welcome_to_the_android_study_session"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         
     </LinearLayout>

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, AudioWorkshopActivity!</string>
     <string name="app_name">AudioWorkshop</string>
     <string name="a_nice_background_for_the_audio_player">A nice background for the audio player</string>
     <string name="photo">Photo</string>
     <string name="touch_the_picture">Tap the picture</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="camera">Camera</string>
+    <string name="welcome_to_the_android_study_session">Welcome to the Android Study Session</string>
 
 </resources>
